@@ -40,4 +40,9 @@ ee.once('some-event-name', (...args) => {
 
 // Calls the appropriate event handlers, passing the agruments to the handlers.
 ee.emit('some-event-name', arg1, arg2, /*...*/, argN);
+
+// subscribe to errors
+ee.on('error', (eventType, error) => {
+  /* ... */
+})
 ```

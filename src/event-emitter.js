@@ -65,8 +65,8 @@ class EventEmitter {
       this._events[type].forEach(fn => {
         try {
           fn(...args);
-        } catch(e) {
-          // TODO: add error handling
+        } catch(error) {
+          this.emit('error', type, error);
         }
       });
     };
