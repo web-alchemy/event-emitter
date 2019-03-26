@@ -10,7 +10,7 @@ npm install --save @web-alchemy/event-emitter
 ```
 
 ## Using
-```
+```javascript
 // import as ecmascript module
 import EventEmitter from '@web-alchemy/event-emitter';
 
@@ -21,7 +21,7 @@ const EventEmitter = require('@web-alchemy/event-emitter');
 <script src="node_modules/@web-alchemy/event-emitter/dist/event-emitter.js"></script>
 // The library will be available through `window.EventEmitter`
 ```
-```
+```javascript
 const ee = new EventEmitter();
 
 // subscribe to event
