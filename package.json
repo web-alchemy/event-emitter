@@ -13,7 +13,7 @@
   "author": "monochromer <monochromer@mail.ru>",
   "repository": {
     "type": "git",
-    "url": "https://github.com/web-alchemy/event-emitter"
+    "url": "git+https://github.com/web-alchemy/event-emitter.git"
   },
   "bugs": {
     "url": "https://github.com/web-alchemy/event-emitter/issues"
@@ -56,5 +56,9 @@
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
     }
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {}
 }
