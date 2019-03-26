@@ -1,0 +1,22 @@
+language: node_js
+
+node_js: lts/*
+
+cache:
+  directories:
+    - node_modules
+
+branches:
+  only:
+    - master
+
+notifications:
+  email: false
+
+before_script:
+  - npm prune
+script:
+  - npm test
+  - npm run build
+after_success:
+  - npm run semantic-release

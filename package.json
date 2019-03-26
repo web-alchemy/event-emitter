@@ -1,0 +1,54 @@
+{
+  "name": "@web-alchemy/event-emitter",
+  "version": "0.0.0-semantic",
+  "description": "Simple library implementing event-emitter pattern",
+  "keywords": [
+    "javascript",
+    "pattern",
+    "event-emitter",
+    "pub-sub",
+    "observer",
+    "mediator"
+  ],
+  "author": "monochromer <monochromer@mail.ru>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/web-alchemy/event-emitter"
+  },
+  "bugs": {
+    "url": "https://github.com/web-alchemy/event-emitter/issues"
+  },
+  "homepage": "https://github.com/web-alchemy/event-emitter",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "main": "dist/event-emitter.js",
+  "module": "dist/event-emitter.es.js",
+  "scripts": {
+    "prebuild": "rimraf dist",
+    "build": "rollup -c",
+    "prepublishOnly": "npm run build",
+    "test": "mocha test/**/*.js --require esm",
+    "semantic-release": "semantic-release",
+    "commit": "git-cz"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "chai": "^4.2.0",
+    "change-case": "^3.1.0",
+    "commitizen": "^3.0.7",
+    "esm": "^3.2.20",
+    "husky": "^1.3.1",
+    "mocha": "^6.0.2",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.7.0",
+    "rollup-plugin-babel": "^4.3.2",
+    "rollup-plugin-node-resolve": "^4.0.1",
+    "semantic-release": "^15.13.3"
+  }
+}
