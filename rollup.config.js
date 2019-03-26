@@ -19,7 +19,7 @@ export default [
     output: {
       file: pkg.main,
       format: 'umd',
-      name: changeCase.pascalCase(pkg.name)
+      name: changeCase.pascalCase(pkg.name.split('/')[1])
     },
     plugins: [
       resolve(),
