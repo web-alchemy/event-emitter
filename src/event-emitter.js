@@ -21,7 +21,11 @@ class EventEmitter {
    * @param {function} fn event handler
    */
   on(type, fn) {
-    (this._events[type] = this._events[type] || []).push(fn);
+    const events = this._events[type] || (this._events[type] = []);
+    if (events && events.some(handler => handler === fn)) {
+      return;
+    };
+    events.push(fn);
     return this;
   }
 

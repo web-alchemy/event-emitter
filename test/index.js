@@ -38,6 +38,15 @@ describe('Event Emitter', () => {
       assert.property(ee._events, eventName);
       assert.deepEqual(ee._events[eventName], [fn1, fn2]);
     });
+
+    it('should add the same handler only once', () => {
+      const fn = () => {};
+      const eventName = 'event';
+      ee.on(eventName, fn);
+      ee.on(eventName, fn);
+      assert.property(ee._events, eventName);
+      assert.deepEqual(ee._events[eventName], [fn]);
+    });
   });
 
   describe('unsubscribe handlers', () => {
