@@ -1,6 +1,6 @@
 {
   "name": "@web-alchemy/event-emitter",
-  "version": "0.0.0-semantic",
+  "version": "1.0.2",
   "description": "Simple library implementing event-emitter pattern",
   "keywords": [
     "javascript",
