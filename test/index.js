@@ -12,7 +12,7 @@ describe('Event Emitter', () => {
   it('should exists with empty events', () => {
     assert.isObject(ee);
     assert.isObject(ee._events);
-    assert.equal(Object.keys(ee._events), 0);
+    assert.lengthOf(Object.keys(ee._events), 0);
   });
 
   describe('subscribe handlers', () => {
@@ -36,16 +36,21 @@ describe('Event Emitter', () => {
       ee.on(eventName, fn1);
       ee.on(eventName, fn2);
       assert.property(ee._events, eventName);
-      assert.deepEqual(ee._events[eventName], [fn1, fn2]);
+      assert.deepEqual(ee._events[eventName], [fn2, fn1]);
     });
 
     it('should add the same handler only once', () => {
       const fn = () => {};
+      const fn2 = () => {};
       const eventName = 'event';
       ee.on(eventName, fn);
       ee.on(eventName, fn);
       assert.property(ee._events, eventName);
       assert.deepEqual(ee._events[eventName], [fn]);
+      ee.on(eventName, fn);
+      ee.on(eventName, fn2);
+      ee.on(eventName, fn);
+      assert.deepEqual(ee._events[eventName], [fn2, fn]);
     });
   });
 
@@ -84,7 +89,7 @@ describe('Event Emitter', () => {
       assert.typeOf(ee.emit, 'function');
     });
 
-    it('should emit handler for event type with arguments', () => {
+    it('should emit handler for event type with arguments', (done) => {
       const eventName = 'emit-event-name';
       const arg1 = 'some-arg';
       const arg2 = {
@@ -93,8 +98,66 @@ describe('Event Emitter', () => {
       };
       const fn = (...args) => {
         assert.deepEqual(args, [arg1, arg2]);
+        done();
       };
       ee.on(eventName, fn);
+      ee.emit(eventName, arg1, arg2);
+    });
+
+    it('should handle error', (done) => {
+      const eventName = 'emit-event-name';
+      const error = new Error();
+      error.name = 'test-error';
+      error.message = 'some error description';
+      const fn = () => {
+        throw error;
+      }
+      ee.on(eventName, fn);
+      ee.on('error', (type, ex) => {
+        assert.deepEqual(ex, error);
+        assert.equal(type, eventName);
+        done();
+      });
+
+      ee.emit(eventName);
+    });
+
+    it('should continue handle events, if error happens', (done) => {
+      let count = 0;
+      const end = () => {
+        count++;
+        if (count === 2) {
+          done();
+        }
+      }
+
+      const eventName = 'emit-event-name';
+
+      const error = new Error();
+      error.name = 'test-error';
+      error.message = 'some error description';
+      const handlerWithError = () => {
+        throw error;
+      }
+
+      const arg1 = 'some-arg';
+      const arg2 = {
+        a: 'a',
+        props: ['1', 2, 'x']
+      };
+      const handler = (...args) => {
+        assert.deepEqual(args, [arg1, arg2]);
+        end();
+      };
+
+      ee.on(eventName, handlerWithError);
+      ee.on(eventName, handler);
+      ee.on('error', (type, ex) => {
+        assert.deepEqual(ex, error);
+        assert.equal(type, eventName);
+        end();
+      });
+
       ee.emit(eventName, arg1, arg2);
     });
   });

@@ -22,10 +22,9 @@ class EventEmitter {
    */
   on(type, fn) {
     const events = this._events[type] || (this._events[type] = []);
-    if (events && events.some(handler => handler === fn)) {
-      return;
+    if (!events.some(handler => handler === fn)) {
+      events.unshift(fn);
     };
-    events.push(fn);
     return this;
   }
 
@@ -65,14 +64,16 @@ class EventEmitter {
    * @param {any[]} args event arguments
    */
   emit(type, ...args) {
-    if (this._events[type]) {
-      this._events[type].forEach(fn => {
+    const events = this._events[type];
+    if (events) {
+      let index = events.length;
+      while (index--) {
         try {
-          fn(...args);
+          events[index](...args);
         } catch(error) {
           this.emit('error', type, error);
         }
-      });
+      }
     };
     return this;
   }
