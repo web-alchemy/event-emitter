@@ -1,5 +1,5 @@
-import babel from 'rollup-plugin-babel';
-import resolve from 'rollup-plugin-node-resolve';
+import babel from '@rollup/plugin-babel';
+import resolve from '@rollup/plugin-node-resolve';
 import changeCase from 'change-case';
 import pkg from './package.json';
 
