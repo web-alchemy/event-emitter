@@ -8,13 +8,16 @@ on:
 jobs:
   npm-publish:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [12.x]
     steps:
       - name: Checkout repository
         uses: actions/checkout@master
-      - name: Set up Node.js
+      - name: Set up Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@master
         with:
-          node-version: 12
+          node-version: ${{ matrix.node-version }}
           registry-url: https://registry.npmjs.org/
       - run: npm ci
       - run: npm test
