@@ -60,5 +60,6 @@
   },
   "directories": {
     "test": "test"
-  }
+  },
+  "types": "index.d.ts"
 }
