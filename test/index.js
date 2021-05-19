@@ -201,4 +201,64 @@ describe('Event Emitter', () => {
       assert.deepEqual(ee._events[eventName], [fn1]);
     });
   });
+
+  describe('error handling', () => {
+    it('should create handler for errors', () => {
+      const fn = () => {};
+      const eventName = 'error';
+      ee.on(eventName, fn);
+      assert.property(ee._events, eventName);
+      assert.isNotEmpty(ee._events[eventName]);
+    });
+
+    it('should catch synchronous errors', () => {
+      const errorEventType = 'example-event';
+      const errorMessage = 'some error message';
+      function handlerWithError() {
+        throw new Error(errorMessage);
+      }
+      function errorHandler(type, error) {
+        assert.equal(type, errorEventType);
+        assert.equal(error.message, errorMessage);
+      }
+      ee.on('error', errorHandler);
+      ee.on(errorEventType, handlerWithError);
+      ee.emit(errorEventType);
+    });
+
+    it('should catch asynchronous errors in handlers with returned promises', (done) => {
+      const errorEventType = 'example-event';
+      const errorMessage = 'some error message';
+      function handlerWithError() {
+        return Promise.resolve()
+          .then(() => {
+            throw new Error(errorMessage)
+          })
+      }
+      function errorHandler(type, error) {
+        assert.equal(type, errorEventType);
+        assert.equal(error.message, errorMessage);
+        done();
+      }
+      ee.on('error', errorHandler);
+      ee.on(errorEventType, handlerWithError);
+      ee.emit(errorEventType);
+    });
+
+    it('should catch asynchronous errors in async handlers', (done) => {
+      const errorEventType = 'example-event';
+      const errorMessage = 'some error message';
+      async function handlerWithError() {
+        throw new Error(errorMessage);
+      }
+      function errorHandler(type, error) {
+        assert.equal(type, errorEventType);
+        assert.equal(error.message, errorMessage);
+        done();
+      }
+      ee.on('error', errorHandler);
+      ee.on(errorEventType, handlerWithError);
+      ee.emit(errorEventType);
+    });
+  });
 });

@@ -69,9 +69,18 @@ class EventEmitter {
       let index = events.length;
       while (index--) {
         try {
-          events[index](...args);
+          const result = events[index](...args);
+          if (result && typeof result.then === 'function') {
+            result.then(undefined, error => {
+              this.emit('error', type, error);
+            });
+          }
         } catch(error) {
-          this.emit('error', type, error);
+          if (type !== 'error') {
+            this.emit('error', type, error);
+          } else {
+            throw error;
+          }
         }
       }
     };
