@@ -31,14 +31,15 @@
     "prepublishOnly": "npm run build",
     "test": "mocha test/**/*.js --require esm",
     "semantic-release": "semantic-release",
-    "cm": "git-cz"
+    "cm": "git-cz",
+    "prepare": "husky install"
   },
   "publishConfig": {
     "access": "public"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.0",
-    "@babel/preset-env": "^7.14.1",
+    "@babel/core": "^7.14.3",
+    "@babel/preset-env": "^7.14.2",
     "@rollup/plugin-babel": "^5.3.0",
     "@rollup/plugin-node-resolve": "^11.2.1",
     "@semantic-release/git": "^9.0.0",
@@ -50,8 +51,8 @@
     "husky": "^6.0.0",
     "mocha": "^8.4.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.47.0",
-    "semantic-release": "^17.4.2"
+    "rollup": "^2.48.0",
+    "semantic-release": "^17.4.3"
   },
   "config": {
     "commitizen": {
