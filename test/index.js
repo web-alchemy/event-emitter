@@ -1,12 +1,24 @@
-import { assert } from 'chai';
-import EventEmitter from '../src/event-emitter';
+const path = require('node:path');
+const { assert } = require('chai');
+const package = require('../package.json');
+
+const [paramName, paramValue] = process.argv.slice(3)[0].split('=')
+
+if (paramName !== '--lib-type') {
+  throw new Error('Set parameter `--lib-type` to `module` or `main`')
+}
+
+const libPath = path.join(process.cwd(), package[paramValue])
+console.log(`Testing file: ${libPath}`)
+const importPromise = import(libPath).then((mod) => mod.default)
 
 describe('Event Emitter', () => {
 
   let ee;
 
-  beforeEach(() => {
-    ee = new EventEmitter();
+  beforeEach(async () => {
+    const EventEmitter = await importPromise
+    ee = new EventEmitter()
   });
 
   it('should exists with empty events', () => {

@@ -23,13 +23,23 @@
   "files": [
     "dist"
   ],
-  "main": "dist/event-emitter.js",
-  "module": "dist/event-emitter.es.js",
+  "main": "./dist/cjs/index.js",
+  "module": "./dist/esm/index.js",
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.js"
+    }
+  },
   "scripts": {
     "prebuild": "rimraf dist",
-    "build": "rollup -c",
+    "build:lib": "rollup -c",
     "prepublishOnly": "npm run build",
-    "test": "mocha test/**/*.js --require esm",
+    "test": "npm run test:main && npm run test:module",
+    "test:module": "mocha test/**/*.js --lib-type=module",
+    "test:main": "mocha test/**/*.js --lib-type=main",
+    "build:packages":"node create-packages.js",
+    "build": "npm run build:lib && npm run build:packages",
     "semantic-release": "semantic-release",
     "cm": "git-cz",
     "prepare": "husky install"
@@ -38,21 +48,20 @@
     "access": "public"
   },
   "devDependencies": {
-    "@babel/core": "^7.14.3",
-    "@babel/preset-env": "^7.14.2",
-    "@rollup/plugin-babel": "^5.3.0",
-    "@rollup/plugin-node-resolve": "^11.2.1",
-    "@semantic-release/git": "^9.0.0",
-    "chai": "^4.3.4",
+    "@babel/core": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "@rollup/plugin-babel": "^5.3.1",
+    "@rollup/plugin-node-resolve": "^13.3.0",
+    "@semantic-release/git": "^10.0.1",
+    "chai": "^4.3.6",
     "change-case": "^4.1.2",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
-    "esm": "^3.2.25",
-    "husky": "^6.0.0",
-    "mocha": "^8.4.0",
+    "husky": "^8.0.1",
+    "mocha": "^10.0.0",
     "rimraf": "^3.0.2",
-    "rollup": "^2.48.0",
-    "semantic-release": "^17.4.3"
+    "rollup": "^2.75.6",
+    "semantic-release": "^19.0.3"
   },
   "config": {
     "commitizen": {
